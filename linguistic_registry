@@ -1,0 +1,93 @@
+{
+  "_comment": "NLP patterns only. No clinical values. No roles. No workflows. Those come from the SRS + BioGPT.",
+
+  "operator_surface_forms": {
+    "<":  ["below", "drops below", "less than", "falls below", "under", "lower than", "fewer than", "not exceed", "beneath"],
+    ">":  ["above", "exceeds", "greater than", "over", "more than", "higher than", "beyond", "surpasses"],
+    "=":  ["equals", "equal to", "is exactly", "matches", "set to"],
+    "!=": ["not equal to", "different from", "other than"],
+    ">=": ["at least", "no less than", "greater than or equal to", "minimum of"],
+    "<=": ["at most", "no more than", "less than or equal to", "maximum of", "not exceeding"]
+  },
+
+  "action_surface_forms": {
+    "alert":      ["alert", "trigger alert", "send alert", "raise alert", "generate alert", "raise alarm"],
+    "restrict":   ["restrict", "deny access", "block", "prohibit", "prevent access", "disallow", "forbid"],
+    "log":        ["log", "record", "audit", "track", "capture", "store"],
+    "display":    ["display", "show", "present", "render", "visualise", "visualize"],
+    "notify":     ["notify", "inform", "send notification", "send message"],
+    "require":    ["require", "enforce", "mandate", "demand"],
+    "prevent":    ["prevent", "stop", "reject", "refuse"],
+    "generate":   ["generate", "create", "produce", "issue"],
+    "escalate":   ["escalate"],
+    "lock":       ["lock", "lock out", "terminate session", "expire session"],
+    "transition": ["transition", "move to", "change state", "update status", "advance"]
+  },
+
+  "condition_trigger_words": [
+    "when", "if", "unless", "after", "before", "until",
+    "once", "whenever", "provided", "upon", "following"
+  ],
+
+  "state_transition_indicator_words": [
+    "transition", "transitions", "cancel", "cancelled", "approve", "approved",
+    "submit", "submitted", "dispense", "dispensed", "administer", "administered",
+    "complete", "completed", "draft", "verified", "created", "re-approve",
+    "workflow", "state change", "order status", "status"
+  ],
+
+  "role_deny_patterns": [
+    "shall not have access",
+    "shall not be able to",
+    "must not",
+    "are not permitted",
+    "is not authorized",
+    "cannot",
+    "not allowed"
+  ],
+
+  "role_grant_patterns": [
+    "only {role} may",
+    "only {role} can",
+    "{role} shall be able to",
+    "{role} may",
+    "{role} can acknowledge",
+    "{role} is authorized"
+  ],
+
+  "biomedical_ner_group_to_canonical": {
+    "LIVB": "USER_ROLE",
+    "ANAT": "CLINICAL_PARAM",
+    "CHEM": "CLINICAL_PARAM",
+    "DISO": "CLINICAL_PARAM",
+    "PROC": "ACTION",
+    "DEVI": "CLINICAL_PARAM",
+    "PHYS": "CLINICAL_PARAM",
+    "PHEN": "CONDITION",
+    "TRIG": "ACTION",
+    "GEOG": null,
+    "OBJC": null
+  },
+
+  "spacy_dep_action_roles":  ["ROOT", "relcl", "acl"],
+  "spacy_dep_subject_roles": ["nsubj", "nsubjpass", "agent"],
+  "spacy_dep_object_roles":  ["dobj", "pobj", "attr", "nmod"],
+
+  "abstract_role_markers": [
+    "unauthorized user", "authorized user", "other roles",
+    "any valid", "valid user", "all roles", "all users",
+    "any user", "unauthorized role", "relevant user"
+  ],
+
+  "_comment_testability": "Phrases used by the shall-rule override in testability_filter.py. Edit freely — no code changes needed.",
+
+  "testability_modal_verbs": [
+    "shall",
+    "must",
+    "should",
+    "is required to",
+    "are required to",
+    "shall be required to",
+    "must be required to"
+  ]
+}

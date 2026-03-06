@@ -1,0 +1,33 @@
+Healthcare EHR System — Software Requirements Specification (SRS)
+Version 1.0 | Clinical Informatics Division
+
+1. This document describes the vital signs monitoring module of the EHR system.
+2. SpO2 is measured as a percentage of oxygen saturation in the blood.
+3. The system shall alert the nurse when SpO2 drops below 90%.
+4. The system shall alert the physician when heart rate exceeds 150 bpm.
+5. A critical SpO2 alert must be displayed within 5 seconds of detection.
+6. The system shall restrict access to patient records for unauthorized user roles.
+7. Only physicians and nurses may acknowledge a critical alert.
+8. The medication order workflow is managed according to NHS Digital standards.
+9. A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+10. The system shall prevent a CANCELLED medication order from being re-approved.
+11. An e-prescription shall be verified by a pharmacist before dispensing.
+12. Normal SpO2 range is 95% to 100% for healthy adults.
+13. The system shall log all access attempts to patient records.
+14. Blood pressure is measured in millimeters of mercury (mmHg).
+15. The system shall alert the nurse when systolic blood pressure exceeds 180 mmHg.
+16. The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+17. Patients shall only have read-only access to their own health records.
+18. The system shall display a drug interaction warning when two conflicting medications are ordered simultaneously.
+19. Heart rate is measured in beats per minute.
+20. The system shall generate a duplicate order alert if the same medication is prescribed twice within 24 hours.
+21. Lab technicians shall not have access to prescribe or view medication orders.
+22. The system shall require two-factor authentication for all physician logins.
+23. CPOE stands for Computerized Physician Order Entry.
+24. The system shall send an alert when respiratory rate falls below 8 breaths per minute.
+25. All alert acknowledgements must be recorded with a timestamp and the acknowledging user's ID.
+26. The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
+27. Glucose levels below 50 mg/dL shall trigger an immediate critical alert to the treating physician.
+28. The system shall prevent a medication order from transitioning from SUBMITTED to DISPENSED without APPROVED status.
+29. A nurse shall not be able to prescribe medications, only administer them.
+30. The system shall lock a user session after 15 minutes of inactivity and require re-authentication.

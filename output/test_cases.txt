@@ -1,0 +1,1795 @@
+======================================================================
+  TestGenX v3.0 — ISO/IEC/IEEE 29119-3 Test Case Report
+  Input   : sample_srs.txt
+  Total   : 59 test cases
+  Elapsed : 73.76s
+======================================================================
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-001
+Purpose     : Verify system alerts when spo2 = 89.0 (boundary below)
+Strategy    : BVA
+Priority    : HIGH
+Class       : boundary/functional (boundary_below)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 89.0
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 89.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : alert displayed to nurse
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-002
+Purpose     : Verify system alerts when spo2 = 90.0 (boundary exact)
+Strategy    : BVA
+Priority    : HIGH
+Class       : boundary/functional (boundary_exact)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 90.0
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 90.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : boundary exact:alert displayed to nurse
+Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-003
+Purpose     : Verify system alerts when spo2 = 91.0 (boundary above)
+Strategy    : BVA
+Priority    : MEDIUM
+Class       : boundary/functional (boundary_above)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 91.0
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 91.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : No alert displayed to nurse
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-004
+Purpose     : Verify system alerts when spo2 = 85.0 (well inside valid)
+Strategy    : BVA
+Priority    : MEDIUM
+Class       : boundary/functional (well_inside_valid)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 85.0
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 85.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : alert displayed to nurse
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-005
+Purpose     : Verify system alerts when spo2 = 95.0 (well inside invalid)
+Strategy    : BVA
+Priority    : LOW
+Class       : boundary/functional (well_inside_invalid)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 95.0
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 95.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : No alert displayed to nurse
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-006
+Purpose     : Verify alert behavior for user role 'nurse' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 90.0
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 90.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : alert displayed to nurse
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-007
+Purpose     : Verify alert behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 90.0
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 90.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-008
+Purpose     : Verify alert behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  spo2: 90.0
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 90.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-009
+Purpose     : Verify clinical input validation for 'spo2': null input
+Strategy    : CLINICAL_VALIDATION
+Priority    : HIGH
+Class       : clinical-validation/input-safety (null_input)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+  spo2: None
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to None.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : validation error null rejected
+Postconditions  : Invalid input was rejected. No data was persisted. Validation error is logged with details.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-010
+Purpose     : Verify clinical input validation for 'spo2': non numeric type
+Strategy    : CLINICAL_VALIDATION
+Priority    : HIGH
+Class       : clinical-validation/input-safety (non_numeric_type)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+  spo2: abc
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to abc.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : validation error type mismatch
+Postconditions  : Invalid input was rejected. No data was persisted. Validation error is logged with details.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-011
+Purpose     : Verify clinical input validation for 'spo2': negative value
+Strategy    : CLINICAL_VALIDATION
+Priority    : HIGH
+Class       : clinical-validation/input-safety (negative_value)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+  spo2: -1
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to -1.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : validation error below instrument min
+Postconditions  : Invalid input was rejected. No data was persisted. Validation error is logged with details.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-012
+Purpose     : Verify clinical input validation for 'spo2': above instrument max
+Strategy    : CLINICAL_VALIDATION
+Priority    : HIGH
+Class       : clinical-validation/input-safety (above_instrument_max)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+  spo2: 150
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 150.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : validation error above instrument max
+Postconditions  : Invalid input was rejected. No data was persisted. Validation error is logged with details.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-013
+Purpose     : Verify clinical input validation for 'spo2': valid normal baseline
+Strategy    : CLINICAL_VALIDATION
+Priority    : MEDIUM
+Class       : clinical-validation/input-safety (valid_normal_baseline)
+Rule        : RULE-001
+Requirement : The system shall alert the nurse when SpO2 drops below 90%.
+
+Preconditions:
+  - Patient record exists in the system.
+  - spo2 sensor or input mechanism is connected and operational.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+  spo2: 95.0
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set spo2 to 95.0.
+  4. Wait for the system to process the reading (up to 5 seconds).
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : accepted No alert
+Postconditions  : Valid reading accepted. No alert triggered. System state is unchanged.
+Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-014
+Purpose     : Verify 'display' meets timing deadline — well within deadline (measured: 2.5 seconds)
+Strategy    : TEMPORAL
+Priority    : LOW
+Class       : temporal/timing-deadline (well_within_deadline)
+Rule        : RULE-002
+Requirement : A critical SpO2 alert must be displayed within 5 seconds of detection.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: seconds
+  response_time_measured: 2.5
+
+Steps:
+  1. Login to the system as clinician.
+  2. Trigger the condition that requires the system to display a warning/alert.
+  3. Observe the user interface for the expected display element.
+  4. Verify the content, positioning, and timing of the displayed element.
+
+Expected Result : critical SpO2 alert displayed within 5 seconds compliant (within 5 seconds)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-015
+Purpose     : Verify 'display' meets timing deadline — just before deadline (measured: 4.0 seconds)
+Strategy    : TEMPORAL
+Priority    : MEDIUM
+Class       : temporal/timing-deadline (just_before_deadline)
+Rule        : RULE-002
+Requirement : A critical SpO2 alert must be displayed within 5 seconds of detection.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: seconds
+  response_time_measured: 4.0
+
+Steps:
+  1. Login to the system as clinician.
+  2. Trigger the condition that requires the system to display a warning/alert.
+  3. Observe the user interface for the expected display element.
+  4. Verify the content, positioning, and timing of the displayed element.
+
+Expected Result : critical SpO2 alert displayed within 5 seconds compliant (within 5 seconds)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-016
+Purpose     : Verify 'display' meets timing deadline — at deadline boundary (measured: 5.0 seconds)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (at_deadline_boundary)
+Rule        : RULE-002
+Requirement : A critical SpO2 alert must be displayed within 5 seconds of detection.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: seconds
+  response_time_measured: 5.0
+
+Steps:
+  1. Login to the system as clinician.
+  2. Trigger the condition that requires the system to display a warning/alert.
+  3. Observe the user interface for the expected display element.
+  4. Verify the content, positioning, and timing of the displayed element.
+
+Expected Result : boundary critical SpO2 alert displayed within 5 seconds (within 5 seconds)
+Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-017
+Purpose     : Verify 'display' meets timing deadline — deadline exceeded (measured: 6.0 seconds)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (deadline_exceeded)
+Rule        : RULE-002
+Requirement : A critical SpO2 alert must be displayed within 5 seconds of detection.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: seconds
+  response_time_measured: 6.0
+
+Steps:
+  1. Login to the system as clinician.
+  2. Trigger the condition that requires the system to display a warning/alert.
+  3. Observe the user interface for the expected display element.
+  4. Verify the content, positioning, and timing of the displayed element.
+
+Expected Result : non compliant timeout (within 5 seconds)
+Postconditions  : An alert or escalation event has been triggered due to the deadline breach. Incident is logged with timestamp.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-018
+Purpose     : Verify acknowledge behavior for user role 'physician' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-003
+Requirement : Only physicians and nurses may acknowledge a critical alert.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'physician' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: physician
+
+Steps:
+  1. Login to the system as physician.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=physician.
+  4. Trigger the action: acknowledge.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : critical alert acknowledged by physician or nurse
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-019
+Purpose     : Verify acknowledge behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-003
+Requirement : Only physicians and nurses may acknowledge a critical alert.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=unauthorized_user_role.
+  4. Trigger the action: acknowledge.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-020
+Purpose     : Verify acknowledge behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-003
+Requirement : Only physicians and nurses may acknowledge a critical alert.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=ward_manager.
+  4. Trigger the action: acknowledge.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-021
+Purpose     : Verify transition behavior for user role 'nurse' (default)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (default)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=nurse.
+  4. Trigger the action: transition.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : medication order transitions from DRAFT to SUBMITTED
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-022
+Purpose     : Verify verify behavior for user role 'pharmacist' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-005
+Requirement : An e-prescription shall be verified by a pharmacist before dispensing.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'pharmacist' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: pharmacist
+
+Steps:
+  1. Login to the system as pharmacist.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=pharmacist.
+  4. Trigger the action: verify.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : e-prescription verified by pharmacist
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-023
+Purpose     : Verify verify behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-005
+Requirement : An e-prescription shall be verified by a pharmacist before dispensing.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=unauthorized_user_role.
+  4. Trigger the action: verify.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-024
+Purpose     : Verify verify behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-005
+Requirement : An e-prescription shall be verified by a pharmacist before dispensing.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=ward_manager.
+  4. Trigger the action: verify.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-025
+Purpose     : Verify log behavior for user role 'nurse' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Perform the action that should trigger audit logging.
+  3. Navigate to the audit log module.
+  4. Search for the log entry corresponding to the performed action.
+  5. Verify that a timestamp and user ID are recorded in the log entry.
+
+Expected Result : audit log entry created for access attempt
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-026
+Purpose     : Verify log behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Perform the action that should trigger audit logging.
+  3. Navigate to the audit log module.
+  4. Search for the log entry corresponding to the performed action.
+  5. Verify that a timestamp and user ID are recorded in the log entry.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-027
+Purpose     : Verify log behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Perform the action that should trigger audit logging.
+  3. Navigate to the audit log module.
+  4. Search for the log entry corresponding to the performed action.
+  5. Verify that a timestamp and user ID are recorded in the log entry.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-028
+Purpose     : Verify notify behavior for user role 'physician' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-007
+Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'physician' exists and is active.
+  - System clock is synchronized and accurate.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: physician
+
+Steps:
+  1. Login to the system as physician.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set the clinical parameter to threshold value.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : physician notified of unacknowledged critical alert (within 10 minutes)
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-029
+Purpose     : Verify notify behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-007
+Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System clock is synchronized and accurate.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set the clinical parameter to threshold value.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : access denied (within 10 minutes)
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-030
+Purpose     : Verify notify behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-007
+Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System clock is synchronized and accurate.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set the clinical parameter to threshold value.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : access controlled (within 10 minutes)
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-031
+Purpose     : Verify 'notify' meets timing deadline — well within deadline (measured: 5.0 minutes)
+Strategy    : TEMPORAL
+Priority    : LOW
+Class       : temporal/timing-deadline (well_within_deadline)
+Rule        : RULE-007
+Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'physician' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: physician
+  response_time_measured: 5.0
+
+Steps:
+  1. Login to the system as physician.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : physician notified of unacknowledged critical alert compliant (within 10 minutes)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-032
+Purpose     : Verify 'notify' meets timing deadline — just before deadline (measured: 9.5 minutes)
+Strategy    : TEMPORAL
+Priority    : MEDIUM
+Class       : temporal/timing-deadline (just_before_deadline)
+Rule        : RULE-007
+Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'physician' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: physician
+  response_time_measured: 9.5
+
+Steps:
+  1. Login to the system as physician.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : physician notified of unacknowledged critical alert compliant (within 10 minutes)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-033
+Purpose     : Verify 'notify' meets timing deadline — at deadline boundary (measured: 10.0 minutes)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (at_deadline_boundary)
+Rule        : RULE-007
+Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'physician' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: physician
+  response_time_measured: 10.0
+
+Steps:
+  1. Login to the system as physician.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : boundary physician notified of unacknowledged critical alert (within 10 minutes)
+Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-034
+Purpose     : Verify 'notify' meets timing deadline — deadline exceeded (measured: 11.0 minutes)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (deadline_exceeded)
+Rule        : RULE-007
+Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'physician' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: physician
+  response_time_measured: 11.0
+
+Steps:
+  1. Login to the system as physician.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : non compliant timeout (within 10 minutes)
+Postconditions  : An alert or escalation event has been triggered due to the deadline breach. Incident is logged with timestamp.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-035
+Purpose     : Verify restrict behavior for user role 'patient' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-008
+Requirement : Patients shall only have read-only access to their own health records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'patient' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: patient
+
+Steps:
+  1. Login to the system as patient.
+  2. Attempt to access or modify the restricted resource/action.
+  3. Observe the system response.
+  4. Verify that access is denied and an appropriate error message is shown.
+  5. Confirm no unauthorized data was exposed or modified.
+
+Expected Result : patient access to health records is read-only
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-036
+Purpose     : Verify restrict behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-008
+Requirement : Patients shall only have read-only access to their own health records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Attempt to access or modify the restricted resource/action.
+  3. Observe the system response.
+  4. Verify that access is denied and an appropriate error message is shown.
+  5. Confirm no unauthorized data was exposed or modified.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-037
+Purpose     : Verify restrict behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-008
+Requirement : Patients shall only have read-only access to their own health records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Attempt to access or modify the restricted resource/action.
+  3. Observe the system response.
+  4. Verify that access is denied and an appropriate error message is shown.
+  5. Confirm no unauthorized data was exposed or modified.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-038
+Purpose     : Verify display behavior for user role 'nurse' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-009
+Requirement : The system shall display a drug interaction warning when two conflicting medications are ordered simultaneously.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Trigger the condition that requires the system to display a warning/alert.
+  3. Observe the user interface for the expected display element.
+  4. Verify the content, positioning, and timing of the displayed element.
+
+Expected Result : drug interaction warning displayed
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-039
+Purpose     : Verify display behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-009
+Requirement : The system shall display a drug interaction warning when two conflicting medications are ordered simultaneously.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Trigger the condition that requires the system to display a warning/alert.
+  3. Observe the user interface for the expected display element.
+  4. Verify the content, positioning, and timing of the displayed element.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-040
+Purpose     : Verify display behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-009
+Requirement : The system shall display a drug interaction warning when two conflicting medications are ordered simultaneously.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Trigger the condition that requires the system to display a warning/alert.
+  3. Observe the user interface for the expected display element.
+  4. Verify the content, positioning, and timing of the displayed element.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-041
+Purpose     : Verify restrict behavior for user role 'nurse' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-010
+Requirement : Lab technicians shall not have access to prescribe or view medication orders.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Attempt to access or modify the restricted resource/action.
+  3. Observe the system response.
+  4. Verify that access is denied and an appropriate error message is shown.
+  5. Confirm no unauthorized data was exposed or modified.
+
+Expected Result : lab technician denied access to prescribe or view medication orders
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-042
+Purpose     : Verify restrict behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-010
+Requirement : Lab technicians shall not have access to prescribe or view medication orders.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Attempt to access or modify the restricted resource/action.
+  3. Observe the system response.
+  4. Verify that access is denied and an appropriate error message is shown.
+  5. Confirm no unauthorized data was exposed or modified.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-043
+Purpose     : Verify restrict behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-010
+Requirement : Lab technicians shall not have access to prescribe or view medication orders.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Attempt to access or modify the restricted resource/action.
+  3. Observe the system response.
+  4. Verify that access is denied and an appropriate error message is shown.
+  5. Confirm no unauthorized data was exposed or modified.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-044
+Purpose     : Verify record behavior for user role 'nurse' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-011
+Requirement : All alert acknowledgements must be recorded with a timestamp and the acknowledging user's ID.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Perform the action that should trigger audit logging.
+  3. Navigate to the audit log module.
+  4. Search for the log entry corresponding to the performed action.
+  5. Verify that a timestamp and user ID are recorded in the log entry.
+
+Expected Result : alert acknowledgement recorded with timestamp and user ID
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-045
+Purpose     : Verify record behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-011
+Requirement : All alert acknowledgements must be recorded with a timestamp and the acknowledging user's ID.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Perform the action that should trigger audit logging.
+  3. Navigate to the audit log module.
+  4. Search for the log entry corresponding to the performed action.
+  5. Verify that a timestamp and user ID are recorded in the log entry.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-046
+Purpose     : Verify record behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-011
+Requirement : All alert acknowledgements must be recorded with a timestamp and the acknowledging user's ID.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Perform the action that should trigger audit logging.
+  3. Navigate to the audit log module.
+  4. Search for the log entry corresponding to the performed action.
+  5. Verify that a timestamp and user ID are recorded in the log entry.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-047
+Purpose     : Verify escalate behavior for user role 'ward_manager' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-012
+Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System clock is synchronized and accurate.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set the clinical parameter to threshold value.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : unacknowledged alert escalated to ward manager (within 10 minutes)
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-048
+Purpose     : Verify escalate behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-012
+Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System clock is synchronized and accurate.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set the clinical parameter to threshold value.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : access denied (within 10 minutes)
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-049
+Purpose     : Verify 'escalate' meets timing deadline — well within deadline (measured: 5.0 minutes)
+Strategy    : TEMPORAL
+Priority    : LOW
+Class       : temporal/timing-deadline (well_within_deadline)
+Rule        : RULE-012
+Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'ward_manager' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: ward_manager
+  response_time_measured: 5.0
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : unacknowledged alert escalated to ward manager compliant (within 10 minutes)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-050
+Purpose     : Verify 'escalate' meets timing deadline — just before deadline (measured: 9.5 minutes)
+Strategy    : TEMPORAL
+Priority    : MEDIUM
+Class       : temporal/timing-deadline (just_before_deadline)
+Rule        : RULE-012
+Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'ward_manager' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: ward_manager
+  response_time_measured: 9.5
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : unacknowledged alert escalated to ward manager compliant (within 10 minutes)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-051
+Purpose     : Verify 'escalate' meets timing deadline — at deadline boundary (measured: 10.0 minutes)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (at_deadline_boundary)
+Rule        : RULE-012
+Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'ward_manager' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: ward_manager
+  response_time_measured: 10.0
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : boundary unacknowledged alert escalated to ward manager (within 10 minutes)
+Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-052
+Purpose     : Verify 'escalate' meets timing deadline — deadline exceeded (measured: 11.0 minutes)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (deadline_exceeded)
+Rule        : RULE-012
+Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - A user account with role 'ward_manager' exists and is active.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  user_role: ward_manager
+  response_time_measured: 11.0
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the vital signs monitoring dashboard.
+  3. Set unit to minutes.
+  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
+  5. Observe the alert panel for the expected notification.
+  6. Verify the alert content, severity, and recipient are correct.
+
+Expected Result : non compliant timeout (within 10 minutes)
+Postconditions  : An alert or escalation event has been triggered due to the deadline breach. Incident is logged with timestamp.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-053
+Purpose     : Verify prescribe behavior for user role 'nurse' (valid class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (valid_class)
+Rule        : RULE-013
+Requirement : A nurse shall not be able to prescribe medications, only administer them.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'nurse' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: nurse
+
+Steps:
+  1. Login to the system as nurse.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=nurse.
+  4. Trigger the action: prescribe.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : nurse cannot prescribe medications but can administer them
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-054
+Purpose     : Verify prescribe behavior for user role 'unauthorized_user_role' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-013
+Requirement : A nurse shall not be able to prescribe medications, only administer them.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_role' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_role
+
+Steps:
+  1. Login to the system as unauthorized_user_role.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=unauthorized_user_role.
+  4. Trigger the action: prescribe.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-055
+Purpose     : Verify prescribe behavior for user role 'ward_manager' (boundary class)
+Strategy    : EP
+Priority    : MEDIUM
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-013
+Requirement : A nurse shall not be able to prescribe medications, only administer them.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'ward_manager' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: ward_manager
+
+Steps:
+  1. Login to the system as ward_manager.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=ward_manager.
+  4. Trigger the action: prescribe.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : access controlled
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-056
+Purpose     : Verify 'lock' meets timing deadline — well within deadline (measured: 7.5 minutes)
+Strategy    : TEMPORAL
+Priority    : LOW
+Class       : temporal/timing-deadline (well_within_deadline)
+Rule        : RULE-014
+Requirement : The system shall lock a user session after 15 minutes of inactivity and require re-authentication.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  response_time_measured: 7.5
+
+Steps:
+  1. Configure the monitoring infrastructure to record response timestamps.
+  2. Login to the system as clinician.
+  3. Trigger the condition that initiates the 'lock' process.
+  4. Record the exact start timestamp when the triggering event occurs.
+  5. Simulate that the measured response time is: 7.5 minutes.
+  6. Compare measured response time against the required deadline: after 15 minutes.
+  7. Verify the response is within the deadline — expected: user session locked and re-authentication required compliant.
+
+Expected Result : user session locked and re-authentication required compliant (within 15 minutes)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-057
+Purpose     : Verify 'lock' meets timing deadline — just before deadline (measured: 14.5 minutes)
+Strategy    : TEMPORAL
+Priority    : MEDIUM
+Class       : temporal/timing-deadline (just_before_deadline)
+Rule        : RULE-014
+Requirement : The system shall lock a user session after 15 minutes of inactivity and require re-authentication.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  response_time_measured: 14.5
+
+Steps:
+  1. Configure the monitoring infrastructure to record response timestamps.
+  2. Login to the system as clinician.
+  3. Trigger the condition that initiates the 'lock' process.
+  4. Record the exact start timestamp when the triggering event occurs.
+  5. Simulate that the measured response time is: 14.5 minutes.
+  6. Compare measured response time against the required deadline: after 15 minutes.
+  7. Verify the response is within the deadline — expected: user session locked and re-authentication required compliant.
+
+Expected Result : user session locked and re-authentication required compliant (within 15 minutes)
+Postconditions  : Response was delivered within the required deadline. No escalation triggered.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-058
+Purpose     : Verify 'lock' meets timing deadline — at deadline boundary (measured: 15.0 minutes)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (at_deadline_boundary)
+Rule        : RULE-014
+Requirement : The system shall lock a user session after 15 minutes of inactivity and require re-authentication.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  response_time_measured: 15.0
+
+Steps:
+  1. Configure the monitoring infrastructure to record response timestamps.
+  2. Login to the system as clinician.
+  3. Trigger the condition that initiates the 'lock' process.
+  4. Record the exact start timestamp when the triggering event occurs.
+  5. Simulate that the measured response time is: 15.0 minutes.
+  6. Compare measured response time against the required deadline: after 15 minutes.
+  7. Verify the response is within the deadline — expected: boundary user session locked and re-authentication required.
+
+Expected Result : boundary user session locked and re-authentication required (within 15 minutes)
+Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-059
+Purpose     : Verify 'lock' meets timing deadline — deadline exceeded (measured: 16.0 minutes)
+Strategy    : TEMPORAL
+Priority    : HIGH
+Class       : temporal/timing-deadline (deadline_exceeded)
+Rule        : RULE-014
+Requirement : The system shall lock a user session after 15 minutes of inactivity and require re-authentication.
+
+Preconditions:
+  - Patient record exists in the system.
+  - unit sensor or input mechanism is connected and operational.
+  - System clock is synchronized and accurate to within 0.1 seconds.
+  - Response-time monitoring infrastructure is in place and calibrated.
+  - System is running and all services are healthy.
+
+Inputs:
+  unit: minutes
+  response_time_measured: 16.0
+
+Steps:
+  1. Configure the monitoring infrastructure to record response timestamps.
+  2. Login to the system as clinician.
+  3. Trigger the condition that initiates the 'lock' process.
+  4. Record the exact start timestamp when the triggering event occurs.
+  5. Simulate that the measured response time is: 16.0 minutes.
+  6. Compare measured response time against the required deadline: after 15 minutes.
+  7. Verify the response exceeds the deadline — expected: non compliant timeout.
+
+Expected Result : non compliant timeout (within 15 minutes)
+Postconditions  : An alert or escalation event has been triggered due to the deadline breach. Incident is logged with timestamp.
+Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
+
+======================================================================
+  Strategy breakdown : {'BVA': 5, 'EP': 33, 'CLINICAL_VALIDATION': 5, 'TEMPORAL': 16}
+  Priority breakdown : {'HIGH': 25, 'MEDIUM': 29, 'LOW': 5}
+======================================================================
