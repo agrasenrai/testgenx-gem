@@ -1,8 +1,8 @@
 ======================================================================
   TestGenX v3.0 — ISO/IEC/IEEE 29119-3 Test Case Report
   Input   : sample_srs.txt
-  Total   : 59 test cases
-  Elapsed : 73.76s
+  Total   : 56 test cases
+  Elapsed : 63.15s
 ======================================================================
 
 ----------------------------------------------------------------------
@@ -63,8 +63,8 @@ Steps:
   5. Observe the alert panel for the expected notification.
   6. Verify the alert content, severity, and recipient are correct.
 
-Expected Result : boundary exact:alert displayed to nurse
-Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
+Expected Result : No alert displayed to nurse
+Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
 Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
@@ -162,99 +162,6 @@ Suspend If      : System unavailable, spo2 sensor hardware fault detected, or te
 
 ----------------------------------------------------------------------
 ID          : TC-HEALTH-006
-Purpose     : Verify alert behavior for user role 'nurse' (valid class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (valid_class)
-Rule        : RULE-001
-Requirement : The system shall alert the nurse when SpO2 drops below 90%.
-
-Preconditions:
-  - Patient record exists in the system.
-  - spo2 sensor or input mechanism is connected and operational.
-  - A user account with role 'nurse' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  spo2: 90.0
-  user_role: nurse
-
-Steps:
-  1. Login to the system as nurse.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set spo2 to 90.0.
-  4. Wait for the system to process the reading (up to 5 seconds).
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
-
-Expected Result : alert displayed to nurse
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-007
-Purpose     : Verify alert behavior for user role 'unauthorized_user_role' (invalid class)
-Strategy    : EP
-Priority    : HIGH
-Class       : equivalence/access-control (invalid_class)
-Rule        : RULE-001
-Requirement : The system shall alert the nurse when SpO2 drops below 90%.
-
-Preconditions:
-  - Patient record exists in the system.
-  - spo2 sensor or input mechanism is connected and operational.
-  - A user account with role 'unauthorized_user_role' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  spo2: 90.0
-  user_role: unauthorized_user_role
-
-Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set spo2 to 90.0.
-  4. Wait for the system to process the reading (up to 5 seconds).
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
-
-Expected Result : access denied
-Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
-Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-008
-Purpose     : Verify alert behavior for user role 'ward_manager' (boundary class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (boundary_class)
-Rule        : RULE-001
-Requirement : The system shall alert the nurse when SpO2 drops below 90%.
-
-Preconditions:
-  - Patient record exists in the system.
-  - spo2 sensor or input mechanism is connected and operational.
-  - A user account with role 'ward_manager' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  spo2: 90.0
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set spo2 to 90.0.
-  4. Wait for the system to process the reading (up to 5 seconds).
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
-
-Expected Result : access controlled
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-009
 Purpose     : Verify clinical input validation for 'spo2': null input
 Strategy    : CLINICAL_VALIDATION
 Priority    : HIGH
@@ -285,7 +192,7 @@ Postconditions  : Invalid input was rejected. No data was persisted. Validation 
 Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-010
+ID          : TC-HEALTH-007
 Purpose     : Verify clinical input validation for 'spo2': non numeric type
 Strategy    : CLINICAL_VALIDATION
 Priority    : HIGH
@@ -316,7 +223,7 @@ Postconditions  : Invalid input was rejected. No data was persisted. Validation 
 Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-011
+ID          : TC-HEALTH-008
 Purpose     : Verify clinical input validation for 'spo2': negative value
 Strategy    : CLINICAL_VALIDATION
 Priority    : HIGH
@@ -347,7 +254,7 @@ Postconditions  : Invalid input was rejected. No data was persisted. Validation 
 Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-012
+ID          : TC-HEALTH-009
 Purpose     : Verify clinical input validation for 'spo2': above instrument max
 Strategy    : CLINICAL_VALIDATION
 Priority    : HIGH
@@ -378,7 +285,7 @@ Postconditions  : Invalid input was rejected. No data was persisted. Validation 
 Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-013
+ID          : TC-HEALTH-010
 Purpose     : Verify clinical input validation for 'spo2': valid normal baseline
 Strategy    : CLINICAL_VALIDATION
 Priority    : MEDIUM
@@ -409,7 +316,7 @@ Postconditions  : Valid reading accepted. No alert triggered. System state is un
 Suspend If      : System unavailable, spo2 sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-014
+ID          : TC-HEALTH-011
 Purpose     : Verify 'display' meets timing deadline — well within deadline (measured: 2.5 seconds)
 Strategy    : TEMPORAL
 Priority    : LOW
@@ -429,17 +336,17 @@ Inputs:
   response_time_measured: 2.5
 
 Steps:
-  1. Login to the system as clinician.
+  1. Login to the system as an authorized user.
   2. Trigger the condition that requires the system to display a warning/alert.
   3. Observe the user interface for the expected display element.
   4. Verify the content, positioning, and timing of the displayed element.
 
-Expected Result : critical SpO2 alert displayed within 5 seconds compliant (within 5 seconds)
+Expected Result : critical SpO2 alert displayed compliant (within 5 seconds)
 Postconditions  : Response was delivered within the required deadline. No escalation triggered.
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-015
+ID          : TC-HEALTH-012
 Purpose     : Verify 'display' meets timing deadline — just before deadline (measured: 4.0 seconds)
 Strategy    : TEMPORAL
 Priority    : MEDIUM
@@ -459,17 +366,17 @@ Inputs:
   response_time_measured: 4.0
 
 Steps:
-  1. Login to the system as clinician.
+  1. Login to the system as an authorized user.
   2. Trigger the condition that requires the system to display a warning/alert.
   3. Observe the user interface for the expected display element.
   4. Verify the content, positioning, and timing of the displayed element.
 
-Expected Result : critical SpO2 alert displayed within 5 seconds compliant (within 5 seconds)
+Expected Result : critical SpO2 alert displayed compliant (within 5 seconds)
 Postconditions  : Response was delivered within the required deadline. No escalation triggered.
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-016
+ID          : TC-HEALTH-013
 Purpose     : Verify 'display' meets timing deadline — at deadline boundary (measured: 5.0 seconds)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -489,17 +396,17 @@ Inputs:
   response_time_measured: 5.0
 
 Steps:
-  1. Login to the system as clinician.
+  1. Login to the system as an authorized user.
   2. Trigger the condition that requires the system to display a warning/alert.
   3. Observe the user interface for the expected display element.
   4. Verify the content, positioning, and timing of the displayed element.
 
-Expected Result : boundary critical SpO2 alert displayed within 5 seconds (within 5 seconds)
+Expected Result : boundary critical SpO2 alert displayed (within 5 seconds)
 Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-017
+ID          : TC-HEALTH-014
 Purpose     : Verify 'display' meets timing deadline — deadline exceeded (measured: 6.0 seconds)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -519,7 +426,7 @@ Inputs:
   response_time_measured: 6.0
 
 Steps:
-  1. Login to the system as clinician.
+  1. Login to the system as an authorized user.
   2. Trigger the condition that requires the system to display a warning/alert.
   3. Observe the user interface for the expected display element.
   4. Verify the content, positioning, and timing of the displayed element.
@@ -529,7 +436,7 @@ Postconditions  : An alert or escalation event has been triggered due to the dea
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-018
+ID          : TC-HEALTH-015
 Purpose     : Verify acknowledge behavior for user role 'physician' (valid class)
 Strategy    : EP
 Priority    : MEDIUM
@@ -558,8 +465,8 @@ Postconditions  : System returns to a stable state. All actions are recorded in 
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-019
-Purpose     : Verify acknowledge behavior for user role 'unauthorized_user_role' (invalid class)
+ID          : TC-HEALTH-016
+Purpose     : Verify acknowledge behavior for user role 'unauthorized_user_roles' (invalid class)
 Strategy    : EP
 Priority    : HIGH
 Class       : equivalence/access-control (invalid_class)
@@ -568,16 +475,16 @@ Requirement : Only physicians and nurses may acknowledge a critical alert.
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
+  - A user account with role 'unauthorized_user_roles' exists and is active.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: unauthorized_user_role
+  user_role: unauthorized_user_roles
 
 Steps:
-  1. Login to the system as unauthorized_user_role.
+  1. Login to the system as unauthorized_user_roles.
   2. Navigate to the relevant module.
-  3. Set input parameters: user_role=unauthorized_user_role.
+  3. Set input parameters: user_role=unauthorized_user_roles.
   4. Trigger the action: acknowledge.
   5. Observe and record the system response.
   6. Compare actual result with expected result.
@@ -587,42 +494,13 @@ Postconditions  : No patient data was exposed. Access attempt is recorded in the
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-020
-Purpose     : Verify acknowledge behavior for user role 'ward_manager' (boundary class)
+ID          : TC-HEALTH-017
+Purpose     : Verify acknowledge behavior for user role 'nurse' (boundary class)
 Strategy    : EP
 Priority    : MEDIUM
 Class       : equivalence/access-control (boundary_class)
 Rule        : RULE-003
 Requirement : Only physicians and nurses may acknowledge a critical alert.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Navigate to the relevant module.
-  3. Set input parameters: user_role=ward_manager.
-  4. Trigger the action: acknowledge.
-  5. Observe and record the system response.
-  6. Compare actual result with expected result.
-
-Expected Result : access controlled
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-021
-Purpose     : Verify transition behavior for user role 'nurse' (default)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (default)
-Rule        : RULE-004
-Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
 
 Preconditions:
   - Patient record exists in the system.
@@ -636,16 +514,247 @@ Steps:
   1. Login to the system as nurse.
   2. Navigate to the relevant module.
   3. Set input parameters: user_role=nurse.
-  4. Trigger the action: transition.
+  4. Trigger the action: acknowledge.
   5. Observe and record the system response.
   6. Compare actual result with expected result.
 
-Expected Result : medication order transitions from DRAFT to SUBMITTED
+Expected Result : access controlled
 Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
+ID          : TC-HEALTH-018
+Purpose     : Verify medication_order transition DRAFT → SUBMITTED (valid transition)
+Strategy    : STATE_TRANSITION
+Priority    : MEDIUM
+Class       : state-transition/workflow (valid_transition)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: SUBMITTED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'SUBMITTED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition success
+Postconditions  : The workflow record is now in the new state. Transition is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-019
+Purpose     : Verify medication_order transition SUBMITTED → APPROVED (valid transition)
+Strategy    : STATE_TRANSITION
+Priority    : MEDIUM
+Class       : state-transition/workflow (valid_transition)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'SUBMITTED'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: SUBMITTED
+  to_state: APPROVED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'SUBMITTED'.
+  4. Attempt to transition the record to state 'APPROVED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition success
+Postconditions  : The workflow record is now in the new state. Transition is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-020
+Purpose     : Verify medication_order transition APPROVED → DISPENSED (valid transition)
+Strategy    : STATE_TRANSITION
+Priority    : MEDIUM
+Class       : state-transition/workflow (valid_transition)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'APPROVED'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: APPROVED
+  to_state: DISPENSED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'APPROVED'.
+  4. Attempt to transition the record to state 'DISPENSED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition success
+Postconditions  : The workflow record is now in the new state. Transition is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-021
+Purpose     : Verify medication_order transition DRAFT → CANCELLED (invalid transition skip)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_skip)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: CANCELLED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'CANCELLED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
 ID          : TC-HEALTH-022
+Purpose     : Verify medication_order transition DRAFT → APPROVED (invalid transition skip)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_skip)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: APPROVED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'APPROVED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-023
+Purpose     : Verify medication_order transition DRAFT → DISPENSED (invalid transition skip)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_skip)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: DISPENSED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'DISPENSED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-024
+Purpose     : Verify medication_order transition CANCELLED → DRAFT (invalid transition from terminal)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_from_terminal)
+Rule        : RULE-004
+Requirement : A medication order shall transition from DRAFT to SUBMITTED only when all mandatory fields are completed.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'CANCELLED'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: CANCELLED
+  to_state: DRAFT
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'CANCELLED'.
+  4. Attempt to transition the record to state 'DRAFT'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-025
 Purpose     : Verify verify behavior for user role 'pharmacist' (valid class)
 Strategy    : EP
 Priority    : MEDIUM
@@ -674,8 +783,8 @@ Postconditions  : System returns to a stable state. All actions are recorded in 
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-023
-Purpose     : Verify verify behavior for user role 'unauthorized_user_role' (invalid class)
+ID          : TC-HEALTH-026
+Purpose     : Verify verify behavior for user role 'unauthorized_user_roles' (invalid class)
 Strategy    : EP
 Priority    : HIGH
 Class       : equivalence/access-control (invalid_class)
@@ -684,16 +793,16 @@ Requirement : An e-prescription shall be verified by a pharmacist before dispens
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
+  - A user account with role 'unauthorized_user_roles' exists and is active.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: unauthorized_user_role
+  user_role: unauthorized_user_roles
 
 Steps:
-  1. Login to the system as unauthorized_user_role.
+  1. Login to the system as unauthorized_user_roles.
   2. Navigate to the relevant module.
-  3. Set input parameters: user_role=unauthorized_user_role.
+  3. Set input parameters: user_role=unauthorized_user_roles.
   4. Trigger the action: verify.
   5. Observe and record the system response.
   6. Compare actual result with expected result.
@@ -703,42 +812,13 @@ Postconditions  : No patient data was exposed. Access attempt is recorded in the
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-024
-Purpose     : Verify verify behavior for user role 'ward_manager' (boundary class)
+ID          : TC-HEALTH-027
+Purpose     : Verify verify behavior for user role 'nurse' (boundary class)
 Strategy    : EP
 Priority    : MEDIUM
 Class       : equivalence/access-control (boundary_class)
 Rule        : RULE-005
 Requirement : An e-prescription shall be verified by a pharmacist before dispensing.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Navigate to the relevant module.
-  3. Set input parameters: user_role=ward_manager.
-  4. Trigger the action: verify.
-  5. Observe and record the system response.
-  6. Compare actual result with expected result.
-
-Expected Result : access controlled
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-025
-Purpose     : Verify log behavior for user role 'nurse' (valid class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (valid_class)
-Rule        : RULE-006
-Requirement : The system shall log all access attempts to patient records.
 
 Preconditions:
   - Patient record exists in the system.
@@ -750,66 +830,11 @@ Inputs:
 
 Steps:
   1. Login to the system as nurse.
-  2. Perform the action that should trigger audit logging.
-  3. Navigate to the audit log module.
-  4. Search for the log entry corresponding to the performed action.
-  5. Verify that a timestamp and user ID are recorded in the log entry.
-
-Expected Result : audit log entry created for access attempt
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-026
-Purpose     : Verify log behavior for user role 'unauthorized_user_role' (invalid class)
-Strategy    : EP
-Priority    : HIGH
-Class       : equivalence/access-control (invalid_class)
-Rule        : RULE-006
-Requirement : The system shall log all access attempts to patient records.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: unauthorized_user_role
-
-Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Perform the action that should trigger audit logging.
-  3. Navigate to the audit log module.
-  4. Search for the log entry corresponding to the performed action.
-  5. Verify that a timestamp and user ID are recorded in the log entry.
-
-Expected Result : access denied
-Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-027
-Purpose     : Verify log behavior for user role 'ward_manager' (boundary class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (boundary_class)
-Rule        : RULE-006
-Requirement : The system shall log all access attempts to patient records.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Perform the action that should trigger audit logging.
-  3. Navigate to the audit log module.
-  4. Search for the log entry corresponding to the performed action.
-  5. Verify that a timestamp and user ID are recorded in the log entry.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=nurse.
+  4. Trigger the action: verify.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
 
 Expected Result : access controlled
 Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
@@ -817,96 +842,237 @@ Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
 ID          : TC-HEALTH-028
-Purpose     : Verify notify behavior for user role 'physician' (valid class)
-Strategy    : EP
+Purpose     : Verify medication_order transition DRAFT → SUBMITTED (valid transition)
+Strategy    : STATE_TRANSITION
 Priority    : MEDIUM
-Class       : equivalence/access-control (valid_class)
-Rule        : RULE-007
-Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+Class       : state-transition/workflow (valid_transition)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'physician' exists and is active.
-  - System clock is synchronized and accurate.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: physician
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: SUBMITTED
+  user_role: None
 
 Steps:
-  1. Login to the system as physician.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set the clinical parameter to threshold value.
-  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'SUBMITTED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
 
-Expected Result : physician notified of unacknowledged critical alert (within 10 minutes)
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
+Expected Result : transition success
+Postconditions  : The workflow record is now in the new state. Transition is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
 
 ----------------------------------------------------------------------
 ID          : TC-HEALTH-029
-Purpose     : Verify notify behavior for user role 'unauthorized_user_role' (invalid class)
-Strategy    : EP
-Priority    : HIGH
-Class       : equivalence/access-control (invalid_class)
-Rule        : RULE-007
-Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+Purpose     : Verify medication_order transition SUBMITTED → APPROVED (valid transition)
+Strategy    : STATE_TRANSITION
+Priority    : MEDIUM
+Class       : state-transition/workflow (valid_transition)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
-  - System clock is synchronized and accurate.
+  - A medication order record exists in state 'SUBMITTED'.
+  - The user has appropriate permissions for the workflow.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: unauthorized_user_role
+  workflow: medication_order
+  from_state: SUBMITTED
+  to_state: APPROVED
+  user_role: None
 
 Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set the clinical parameter to threshold value.
-  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'SUBMITTED'.
+  4. Attempt to transition the record to state 'APPROVED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
 
-Expected Result : access denied (within 10 minutes)
-Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
-Suspend If      : System unavailable or test environment is unresponsive.
+Expected Result : transition success
+Postconditions  : The workflow record is now in the new state. Transition is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
 
 ----------------------------------------------------------------------
 ID          : TC-HEALTH-030
-Purpose     : Verify notify behavior for user role 'ward_manager' (boundary class)
-Strategy    : EP
+Purpose     : Verify medication_order transition APPROVED → DISPENSED (valid transition)
+Strategy    : STATE_TRANSITION
 Priority    : MEDIUM
-Class       : equivalence/access-control (boundary_class)
-Rule        : RULE-007
-Requirement : The system shall notify the physician if a critical alert is not acknowledged within 10 minutes.
+Class       : state-transition/workflow (valid_transition)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System clock is synchronized and accurate.
+  - A medication order record exists in state 'APPROVED'.
+  - The user has appropriate permissions for the workflow.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: ward_manager
+  workflow: medication_order
+  from_state: APPROVED
+  to_state: DISPENSED
+  user_role: None
 
 Steps:
-  1. Login to the system as ward_manager.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set the clinical parameter to threshold value.
-  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to within 10 minutes.
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'APPROVED'.
+  4. Attempt to transition the record to state 'DISPENSED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
 
-Expected Result : access controlled (within 10 minutes)
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
+Expected Result : transition success
+Postconditions  : The workflow record is now in the new state. Transition is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
 
 ----------------------------------------------------------------------
 ID          : TC-HEALTH-031
+Purpose     : Verify medication_order transition DRAFT → CANCELLED (invalid transition skip)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_skip)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: CANCELLED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'CANCELLED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-032
+Purpose     : Verify medication_order transition DRAFT → APPROVED (invalid transition skip)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_skip)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: APPROVED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'APPROVED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-033
+Purpose     : Verify medication_order transition DRAFT → DISPENSED (invalid transition skip)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_skip)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'DRAFT'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: DRAFT
+  to_state: DISPENSED
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'DRAFT'.
+  4. Attempt to transition the record to state 'DISPENSED'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-034
+Purpose     : Verify medication_order transition CANCELLED → DRAFT (invalid transition from terminal)
+Strategy    : STATE_TRANSITION
+Priority    : HIGH
+Class       : state-transition/workflow (invalid_transition_from_terminal)
+Rule        : RULE-006
+Requirement : The system shall log all access attempts to patient records.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A medication order record exists in state 'CANCELLED'.
+  - The user has appropriate permissions for the workflow.
+  - System is running and all services are healthy.
+
+Inputs:
+  workflow: medication_order
+  from_state: CANCELLED
+  to_state: DRAFT
+  user_role: None
+
+Steps:
+  1. Login to the system as an authorized user.
+  2. Navigate to the medication order management module.
+  3. Locate or create a record in state 'CANCELLED'.
+  4. Attempt to transition the record to state 'DRAFT'.
+  5. Observe the system response and verify the expected outcome.
+  6. Check audit logs to confirm the transition attempt was recorded.
+
+Expected Result : transition rejected
+Postconditions  : The workflow record remains in its original state. Rejection is logged.
+Suspend If      : System unavailable, database connection lost, or workflow engine is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-035
 Purpose     : Verify 'notify' meets timing deadline — well within deadline (measured: 5.0 minutes)
 Strategy    : TEMPORAL
 Priority    : LOW
@@ -935,12 +1101,12 @@ Steps:
   5. Observe the alert panel for the expected notification.
   6. Verify the alert content, severity, and recipient are correct.
 
-Expected Result : physician notified of unacknowledged critical alert compliant (within 10 minutes)
+Expected Result : physician notified compliant (within 10 minutes)
 Postconditions  : Response was delivered within the required deadline. No escalation triggered.
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-032
+ID          : TC-HEALTH-036
 Purpose     : Verify 'notify' meets timing deadline — just before deadline (measured: 9.5 minutes)
 Strategy    : TEMPORAL
 Priority    : MEDIUM
@@ -969,12 +1135,12 @@ Steps:
   5. Observe the alert panel for the expected notification.
   6. Verify the alert content, severity, and recipient are correct.
 
-Expected Result : physician notified of unacknowledged critical alert compliant (within 10 minutes)
+Expected Result : physician notified compliant (within 10 minutes)
 Postconditions  : Response was delivered within the required deadline. No escalation triggered.
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-033
+ID          : TC-HEALTH-037
 Purpose     : Verify 'notify' meets timing deadline — at deadline boundary (measured: 10.0 minutes)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -1003,12 +1169,12 @@ Steps:
   5. Observe the alert panel for the expected notification.
   6. Verify the alert content, severity, and recipient are correct.
 
-Expected Result : boundary physician notified of unacknowledged critical alert (within 10 minutes)
+Expected Result : boundary physician notified (within 10 minutes)
 Postconditions  : Response arrived exactly at the deadline boundary. System behavior at edge case is recorded.
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-034
+ID          : TC-HEALTH-038
 Purpose     : Verify 'notify' meets timing deadline — deadline exceeded (measured: 11.0 minutes)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -1042,8 +1208,8 @@ Postconditions  : An alert or escalation event has been triggered due to the dea
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-035
-Purpose     : Verify restrict behavior for user role 'patient' (valid class)
+ID          : TC-HEALTH-039
+Purpose     : Verify verify behavior for user role 'patient' (valid class)
 Strategy    : EP
 Priority    : MEDIUM
 Class       : equivalence/access-control (valid_class)
@@ -1060,18 +1226,19 @@ Inputs:
 
 Steps:
   1. Login to the system as patient.
-  2. Attempt to access or modify the restricted resource/action.
-  3. Observe the system response.
-  4. Verify that access is denied and an appropriate error message is shown.
-  5. Confirm no unauthorized data was exposed or modified.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=patient.
+  4. Trigger the action: verify.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
 
 Expected Result : patient access to health records is read-only
 Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-036
-Purpose     : Verify restrict behavior for user role 'unauthorized_user_role' (invalid class)
+ID          : TC-HEALTH-040
+Purpose     : Verify verify behavior for user role 'unauthorized_user_roles' (invalid class)
 Strategy    : EP
 Priority    : HIGH
 Class       : equivalence/access-control (invalid_class)
@@ -1080,26 +1247,27 @@ Requirement : Patients shall only have read-only access to their own health reco
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
+  - A user account with role 'unauthorized_user_roles' exists and is active.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: unauthorized_user_role
+  user_role: unauthorized_user_roles
 
 Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Attempt to access or modify the restricted resource/action.
-  3. Observe the system response.
-  4. Verify that access is denied and an appropriate error message is shown.
-  5. Confirm no unauthorized data was exposed or modified.
+  1. Login to the system as unauthorized_user_roles.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=unauthorized_user_roles.
+  4. Trigger the action: verify.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
 
 Expected Result : access denied
 Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-037
-Purpose     : Verify restrict behavior for user role 'ward_manager' (boundary class)
+ID          : TC-HEALTH-041
+Purpose     : Verify verify behavior for user role 'nurse' (boundary class)
 Strategy    : EP
 Priority    : MEDIUM
 Class       : equivalence/access-control (boundary_class)
@@ -1108,29 +1276,30 @@ Requirement : Patients shall only have read-only access to their own health reco
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
+  - A user account with role 'nurse' exists and is active.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: ward_manager
+  user_role: nurse
 
 Steps:
-  1. Login to the system as ward_manager.
-  2. Attempt to access or modify the restricted resource/action.
-  3. Observe the system response.
-  4. Verify that access is denied and an appropriate error message is shown.
-  5. Confirm no unauthorized data was exposed or modified.
+  1. Login to the system as nurse.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=nurse.
+  4. Trigger the action: verify.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
 
 Expected Result : access controlled
 Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-038
-Purpose     : Verify display behavior for user role 'nurse' (valid class)
+ID          : TC-HEALTH-042
+Purpose     : Verify display behavior for user role 'nurse' (default)
 Strategy    : EP
 Priority    : MEDIUM
-Class       : equivalence/access-control (valid_class)
+Class       : equivalence/access-control (default)
 Rule        : RULE-009
 Requirement : The system shall display a drug interaction warning when two conflicting medications are ordered simultaneously.
 
@@ -1153,62 +1322,8 @@ Postconditions  : System returns to a stable state. All actions are recorded in 
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-039
-Purpose     : Verify display behavior for user role 'unauthorized_user_role' (invalid class)
-Strategy    : EP
-Priority    : HIGH
-Class       : equivalence/access-control (invalid_class)
-Rule        : RULE-009
-Requirement : The system shall display a drug interaction warning when two conflicting medications are ordered simultaneously.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: unauthorized_user_role
-
-Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Trigger the condition that requires the system to display a warning/alert.
-  3. Observe the user interface for the expected display element.
-  4. Verify the content, positioning, and timing of the displayed element.
-
-Expected Result : access denied
-Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-040
-Purpose     : Verify display behavior for user role 'ward_manager' (boundary class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (boundary_class)
-Rule        : RULE-009
-Requirement : The system shall display a drug interaction warning when two conflicting medications are ordered simultaneously.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Trigger the condition that requires the system to display a warning/alert.
-  3. Observe the user interface for the expected display element.
-  4. Verify the content, positioning, and timing of the displayed element.
-
-Expected Result : access controlled
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-041
-Purpose     : Verify restrict behavior for user role 'nurse' (valid class)
+ID          : TC-HEALTH-043
+Purpose     : Verify prescribe behavior for user role 'lab_technician' (valid class)
 Strategy    : EP
 Priority    : MEDIUM
 Class       : equivalence/access-control (valid_class)
@@ -1217,87 +1332,61 @@ Requirement : Lab technicians shall not have access to prescribe or view medicat
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'nurse' exists and is active.
+  - A user account with role 'lab_technician' exists and is active.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: nurse
+  user_role: lab_technician
 
 Steps:
-  1. Login to the system as nurse.
-  2. Attempt to access or modify the restricted resource/action.
-  3. Observe the system response.
-  4. Verify that access is denied and an appropriate error message is shown.
-  5. Confirm no unauthorized data was exposed or modified.
+  1. Login to the system as lab_technician.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=lab_technician.
+  4. Trigger the action: prescribe.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
 
-Expected Result : lab technician denied access to prescribe or view medication orders
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-042
-Purpose     : Verify restrict behavior for user role 'unauthorized_user_role' (invalid class)
-Strategy    : EP
-Priority    : HIGH
-Class       : equivalence/access-control (invalid_class)
-Rule        : RULE-010
-Requirement : Lab technicians shall not have access to prescribe or view medication orders.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: unauthorized_user_role
-
-Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Attempt to access or modify the restricted resource/action.
-  3. Observe the system response.
-  4. Verify that access is denied and an appropriate error message is shown.
-  5. Confirm no unauthorized data was exposed or modified.
-
-Expected Result : access denied
-Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-043
-Purpose     : Verify restrict behavior for user role 'ward_manager' (boundary class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (boundary_class)
-Rule        : RULE-010
-Requirement : Lab technicians shall not have access to prescribe or view medication orders.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Attempt to access or modify the restricted resource/action.
-  3. Observe the system response.
-  4. Verify that access is denied and an appropriate error message is shown.
-  5. Confirm no unauthorized data was exposed or modified.
-
-Expected Result : access controlled
+Expected Result : lab technician access to prescribe or view medication orders denied
 Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
 ID          : TC-HEALTH-044
-Purpose     : Verify record behavior for user role 'nurse' (valid class)
+Purpose     : Verify prescribe behavior for user role 'unauthorized_user_roles' (invalid class)
+Strategy    : EP
+Priority    : HIGH
+Class       : equivalence/access-control (invalid_class)
+Rule        : RULE-010
+Requirement : Lab technicians shall not have access to prescribe or view medication orders.
+
+Preconditions:
+  - Patient record exists in the system.
+  - A user account with role 'unauthorized_user_roles' exists and is active.
+  - System is running and all services are healthy.
+
+Inputs:
+  user_role: unauthorized_user_roles
+
+Steps:
+  1. Login to the system as unauthorized_user_roles.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=unauthorized_user_roles.
+  4. Trigger the action: prescribe.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
+
+Expected Result : access denied
+Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
+Suspend If      : System unavailable or test environment is unresponsive.
+
+----------------------------------------------------------------------
+ID          : TC-HEALTH-045
+Purpose     : Verify prescribe behavior for user role 'nurse' (boundary class)
 Strategy    : EP
 Priority    : MEDIUM
-Class       : equivalence/access-control (valid_class)
-Rule        : RULE-011
-Requirement : All alert acknowledgements must be recorded with a timestamp and the acknowledging user's ID.
+Class       : equivalence/access-control (boundary_class)
+Rule        : RULE-010
+Requirement : Lab technicians shall not have access to prescribe or view medication orders.
 
 Preconditions:
   - Patient record exists in the system.
@@ -1309,133 +1398,18 @@ Inputs:
 
 Steps:
   1. Login to the system as nurse.
-  2. Perform the action that should trigger audit logging.
-  3. Navigate to the audit log module.
-  4. Search for the log entry corresponding to the performed action.
-  5. Verify that a timestamp and user ID are recorded in the log entry.
-
-Expected Result : alert acknowledgement recorded with timestamp and user ID
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-045
-Purpose     : Verify record behavior for user role 'unauthorized_user_role' (invalid class)
-Strategy    : EP
-Priority    : HIGH
-Class       : equivalence/access-control (invalid_class)
-Rule        : RULE-011
-Requirement : All alert acknowledgements must be recorded with a timestamp and the acknowledging user's ID.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: unauthorized_user_role
-
-Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Perform the action that should trigger audit logging.
-  3. Navigate to the audit log module.
-  4. Search for the log entry corresponding to the performed action.
-  5. Verify that a timestamp and user ID are recorded in the log entry.
-
-Expected Result : access denied
-Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-046
-Purpose     : Verify record behavior for user role 'ward_manager' (boundary class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (boundary_class)
-Rule        : RULE-011
-Requirement : All alert acknowledgements must be recorded with a timestamp and the acknowledging user's ID.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Perform the action that should trigger audit logging.
-  3. Navigate to the audit log module.
-  4. Search for the log entry corresponding to the performed action.
-  5. Verify that a timestamp and user ID are recorded in the log entry.
+  2. Navigate to the relevant module.
+  3. Set input parameters: user_role=nurse.
+  4. Trigger the action: prescribe.
+  5. Observe and record the system response.
+  6. Compare actual result with expected result.
 
 Expected Result : access controlled
 Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-047
-Purpose     : Verify escalate behavior for user role 'ward_manager' (valid class)
-Strategy    : EP
-Priority    : MEDIUM
-Class       : equivalence/access-control (valid_class)
-Rule        : RULE-012
-Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
-  - System clock is synchronized and accurate.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: ward_manager
-
-Steps:
-  1. Login to the system as ward_manager.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set the clinical parameter to threshold value.
-  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
-
-Expected Result : unacknowledged alert escalated to ward manager (within 10 minutes)
-Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-048
-Purpose     : Verify escalate behavior for user role 'unauthorized_user_role' (invalid class)
-Strategy    : EP
-Priority    : HIGH
-Class       : equivalence/access-control (invalid_class)
-Rule        : RULE-012
-Requirement : The system shall escalate an unacknowledged alert to the ward manager after 10 minutes.
-
-Preconditions:
-  - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
-  - System clock is synchronized and accurate.
-  - System is running and all services are healthy.
-
-Inputs:
-  user_role: unauthorized_user_role
-
-Steps:
-  1. Login to the system as unauthorized_user_role.
-  2. Navigate to the vital signs monitoring dashboard.
-  3. Set the clinical parameter to threshold value.
-  4. Wait for the system to process the reading (up to 5 seconds). Wait for up to after 10 minutes.
-  5. Observe the alert panel for the expected notification.
-  6. Verify the alert content, severity, and recipient are correct.
-
-Expected Result : access denied (within 10 minutes)
-Postconditions  : No patient data was exposed. Access attempt is recorded in the audit log.
-Suspend If      : System unavailable or test environment is unresponsive.
-
-----------------------------------------------------------------------
-ID          : TC-HEALTH-049
+ID          : TC-HEALTH-046
 Purpose     : Verify 'escalate' meets timing deadline — well within deadline (measured: 5.0 minutes)
 Strategy    : TEMPORAL
 Priority    : LOW
@@ -1469,7 +1443,7 @@ Postconditions  : Response was delivered within the required deadline. No escala
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-050
+ID          : TC-HEALTH-047
 Purpose     : Verify 'escalate' meets timing deadline — just before deadline (measured: 9.5 minutes)
 Strategy    : TEMPORAL
 Priority    : MEDIUM
@@ -1503,7 +1477,7 @@ Postconditions  : Response was delivered within the required deadline. No escala
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-051
+ID          : TC-HEALTH-048
 Purpose     : Verify 'escalate' meets timing deadline — at deadline boundary (measured: 10.0 minutes)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -1537,7 +1511,7 @@ Postconditions  : Response arrived exactly at the deadline boundary. System beha
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-052
+ID          : TC-HEALTH-049
 Purpose     : Verify 'escalate' meets timing deadline — deadline exceeded (measured: 11.0 minutes)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -1571,7 +1545,7 @@ Postconditions  : An alert or escalation event has been triggered due to the dea
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-053
+ID          : TC-HEALTH-050
 Purpose     : Verify prescribe behavior for user role 'nurse' (valid class)
 Strategy    : EP
 Priority    : MEDIUM
@@ -1595,13 +1569,13 @@ Steps:
   5. Observe and record the system response.
   6. Compare actual result with expected result.
 
-Expected Result : nurse cannot prescribe medications but can administer them
+Expected Result : nurse prevented from prescribing medications, only allowed to administer
 Postconditions  : System returns to a stable state. All actions are recorded in the audit trail.
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-054
-Purpose     : Verify prescribe behavior for user role 'unauthorized_user_role' (invalid class)
+ID          : TC-HEALTH-051
+Purpose     : Verify prescribe behavior for user role 'unauthorized_user_roles' (invalid class)
 Strategy    : EP
 Priority    : HIGH
 Class       : equivalence/access-control (invalid_class)
@@ -1610,16 +1584,16 @@ Requirement : A nurse shall not be able to prescribe medications, only administe
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'unauthorized_user_role' exists and is active.
+  - A user account with role 'unauthorized_user_roles' exists and is active.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: unauthorized_user_role
+  user_role: unauthorized_user_roles
 
 Steps:
-  1. Login to the system as unauthorized_user_role.
+  1. Login to the system as unauthorized_user_roles.
   2. Navigate to the relevant module.
-  3. Set input parameters: user_role=unauthorized_user_role.
+  3. Set input parameters: user_role=unauthorized_user_roles.
   4. Trigger the action: prescribe.
   5. Observe and record the system response.
   6. Compare actual result with expected result.
@@ -1629,8 +1603,8 @@ Postconditions  : No patient data was exposed. Access attempt is recorded in the
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-055
-Purpose     : Verify prescribe behavior for user role 'ward_manager' (boundary class)
+ID          : TC-HEALTH-052
+Purpose     : Verify prescribe behavior for user role 'physician' (boundary class)
 Strategy    : EP
 Priority    : MEDIUM
 Class       : equivalence/access-control (boundary_class)
@@ -1639,16 +1613,16 @@ Requirement : A nurse shall not be able to prescribe medications, only administe
 
 Preconditions:
   - Patient record exists in the system.
-  - A user account with role 'ward_manager' exists and is active.
+  - A user account with role 'physician' exists and is active.
   - System is running and all services are healthy.
 
 Inputs:
-  user_role: ward_manager
+  user_role: physician
 
 Steps:
-  1. Login to the system as ward_manager.
+  1. Login to the system as physician.
   2. Navigate to the relevant module.
-  3. Set input parameters: user_role=ward_manager.
+  3. Set input parameters: user_role=physician.
   4. Trigger the action: prescribe.
   5. Observe and record the system response.
   6. Compare actual result with expected result.
@@ -1658,7 +1632,7 @@ Postconditions  : System returns to a stable state. All actions are recorded in 
 Suspend If      : System unavailable or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-056
+ID          : TC-HEALTH-053
 Purpose     : Verify 'lock' meets timing deadline — well within deadline (measured: 7.5 minutes)
 Strategy    : TEMPORAL
 Priority    : LOW
@@ -1679,7 +1653,7 @@ Inputs:
 
 Steps:
   1. Configure the monitoring infrastructure to record response timestamps.
-  2. Login to the system as clinician.
+  2. Login to the system as an authorized user.
   3. Trigger the condition that initiates the 'lock' process.
   4. Record the exact start timestamp when the triggering event occurs.
   5. Simulate that the measured response time is: 7.5 minutes.
@@ -1691,7 +1665,7 @@ Postconditions  : Response was delivered within the required deadline. No escala
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-057
+ID          : TC-HEALTH-054
 Purpose     : Verify 'lock' meets timing deadline — just before deadline (measured: 14.5 minutes)
 Strategy    : TEMPORAL
 Priority    : MEDIUM
@@ -1712,7 +1686,7 @@ Inputs:
 
 Steps:
   1. Configure the monitoring infrastructure to record response timestamps.
-  2. Login to the system as clinician.
+  2. Login to the system as an authorized user.
   3. Trigger the condition that initiates the 'lock' process.
   4. Record the exact start timestamp when the triggering event occurs.
   5. Simulate that the measured response time is: 14.5 minutes.
@@ -1724,7 +1698,7 @@ Postconditions  : Response was delivered within the required deadline. No escala
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-058
+ID          : TC-HEALTH-055
 Purpose     : Verify 'lock' meets timing deadline — at deadline boundary (measured: 15.0 minutes)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -1745,7 +1719,7 @@ Inputs:
 
 Steps:
   1. Configure the monitoring infrastructure to record response timestamps.
-  2. Login to the system as clinician.
+  2. Login to the system as an authorized user.
   3. Trigger the condition that initiates the 'lock' process.
   4. Record the exact start timestamp when the triggering event occurs.
   5. Simulate that the measured response time is: 15.0 minutes.
@@ -1757,7 +1731,7 @@ Postconditions  : Response arrived exactly at the deadline boundary. System beha
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ----------------------------------------------------------------------
-ID          : TC-HEALTH-059
+ID          : TC-HEALTH-056
 Purpose     : Verify 'lock' meets timing deadline — deadline exceeded (measured: 16.0 minutes)
 Strategy    : TEMPORAL
 Priority    : HIGH
@@ -1778,7 +1752,7 @@ Inputs:
 
 Steps:
   1. Configure the monitoring infrastructure to record response timestamps.
-  2. Login to the system as clinician.
+  2. Login to the system as an authorized user.
   3. Trigger the condition that initiates the 'lock' process.
   4. Record the exact start timestamp when the triggering event occurs.
   5. Simulate that the measured response time is: 16.0 minutes.
@@ -1790,6 +1764,6 @@ Postconditions  : An alert or escalation event has been triggered due to the dea
 Suspend If      : System unavailable, unit sensor hardware fault detected, or test environment is unresponsive.
 
 ======================================================================
-  Strategy breakdown : {'BVA': 5, 'EP': 33, 'CLINICAL_VALIDATION': 5, 'TEMPORAL': 16}
-  Priority breakdown : {'HIGH': 25, 'MEDIUM': 29, 'LOW': 5}
+  Strategy breakdown : {'BVA': 5, 'CLINICAL_VALIDATION': 5, 'TEMPORAL': 16, 'EP': 16, 'STATE_TRANSITION': 14}
+  Priority breakdown : {'HIGH': 27, 'MEDIUM': 24, 'LOW': 5}
 ======================================================================

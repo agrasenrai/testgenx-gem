@@ -137,7 +137,8 @@ _PROMPT_TEMPLATE = textwrap.dedent("""\
             "TIME_CONSTRAINT" : ["<e.g. 'within 5 seconds'>"],
             "CONDITION"       : ["<trigger word: when / if / after / before / ...>"]
           }},
-          "expected_result"  : "<what the system must do / produce as a verifiable outcome, e.g. 'alert displayed on nurse dashboard', 'access denied with error message', 'audit log entry created'>"
+          "expected_result"  : "<what the system must do / produce as a verifiable outcome, e.g. 'alert displayed on nurse dashboard', 'access denied with error message', 'audit log entry created'>",
+          "test_strategies" : ["<select ONLY from: BVA EP STATE_TRANSITION TEMPORAL DECISION_TABLE CLINICAL_VALIDATION — see STRATEGY SELECTION RULES>"]
         }}
       ]
     }}
@@ -154,8 +155,17 @@ _PROMPT_TEMPLATE = textwrap.dedent("""\
         • Any constraint with a measurable threshold or condition
           ("SpO2 below 90%", "response within 5 seconds")
         • Any access-control rule ("only physicians may …", "nurses cannot prescribe")
-        • Any workflow transition rule ("order transitions from DRAFT to SUBMITTED")
+        • Any workflow transition rule — BOTH allowed transitions AND blocked ones:
+            "order transitions from DRAFT to SUBMITTED" → TESTABLE
+            "prevent a medication order from transitioning from X to Y" → TESTABLE
+            "shall prevent a CANCELLED order from being re-approved" → TESTABLE
+        • Any prohibition or restriction: sentences containing "shall prevent",
+          "shall not", "must not", "cannot", "not be able to" → ALWAYS TESTABLE
+        • Any logging or audit requirement ("log all access attempts") → TESTABLE
+        • Any authentication requirement → TESTABLE
+        • Any notification or escalation rule → TESTABLE
       Do NOT require the word "shall" — use semantic meaning, not keywords.
+      When in doubt between TESTABLE and DOMAIN_KNOWLEDGE, choose TESTABLE.
 
     DOMAIN_KNOWLEDGE:
       Background information needed to understand the domain but that does
@@ -255,6 +265,61 @@ _PROMPT_TEMPLATE = textwrap.dedent("""\
     time_constraints:
       • Extract every "within N unit" or "after N unit" or "in N unit" pattern.
       • Normalise unit to: seconds | minutes | hours | days.
+
+    ════════════════════════════════════════════════════════
+    STRATEGY SELECTION RULES  (test_strategies field — per sentence)
+    ════════════════════════════════════════════════════════
+
+    Select ONLY strategies that GENUINELY apply to the requirement.
+    Do NOT add a strategy just because it could theoretically exist.
+    Each strategy has a precise, narrow trigger condition listed below.
+
+    BVA (Boundary Value Analysis):
+      • The sentence states a NUMERIC threshold with an inequality operator.
+        Examples: "below 90%", "exceeds 150 bpm", "below 8 breaths per minute"
+      • Generates tests at/just-below/just-above the threshold value.
+      • Do NOT use for boolean/event conditions ("if drug interaction detected").
+
+    EP (Equivalence Partitioning):
+      • The sentence explicitly GRANTS or DENIES access/action to a named role.
+        Examples: "only physicians may acknowledge", "lab technicians shall not",
+                  "patients shall have read-only access", "pharmacist must verify"
+      • Do NOT use for sentences with no role mention at all.
+
+    STATE_TRANSITION:
+      • The sentence describes a WORKFLOW transition: allowed OR blocked.
+        Examples: "DRAFT to SUBMITTED", "shall prevent transitioning from SUBMITTED
+        to DISPENSED", "CANCELLED order from being re-approved"
+      • Only when workflow state names (ALLCAPS or context-clear states) are present.
+
+    TEMPORAL:
+      • The sentence states an explicit TIME DEADLINE with a number.
+        Examples: "within 5 seconds", "within 10 minutes", "within 24 hours"
+      • Generates tests at/before/beyond the deadline.
+      • Do NOT use if no concrete time value is stated.
+
+    DECISION_TABLE:
+      • The sentence has MULTIPLE INDEPENDENT CONDITIONS combining as AND/OR logic.
+        Example: "if drug interaction detected AND same medication within 24 hours"
+      • Do NOT use for a single-condition sentence.
+
+    CLINICAL_VALIDATION:
+      • ONLY for SAFETY-CRITICAL physiological measurements where a wrong input
+        (null, wrong type, negative, impossibly high) could cause patient harm.
+        Examples: SpO2, heart_rate, blood_pressure, glucose, respiratory_rate.
+      • Do NOT use for boolean events, auth conditions, or workflow state params.
+
+    EXAMPLES (canonical patterns):
+      "alert nurse when SpO2 < 90%"                        → ["BVA", "CLINICAL_VALIDATION"]
+      "only physicians and nurses may acknowledge alert"    → ["EP"]
+      "transition from DRAFT to SUBMITTED"                  → ["STATE_TRANSITION"]
+      "prevent SUBMITTED to DISPENSED without APPROVED"     → ["STATE_TRANSITION"]
+      "alert not acknowledged within 10 minutes"            → ["TEMPORAL"]
+      "escalate unacknowledged alert after 10 minutes"      → ["TEMPORAL"]
+      "log all access attempts"                             → []
+      "require two-factor authentication for physicians"    → ["EP"]
+      "lock session after 15 minutes inactivity"            → ["TEMPORAL"]
+      "drug interaction when two conflicting medications"   → ["EP", "DECISION_TABLE"]
 
     ════════════════════════════════════════════════════════
     OUTPUT RULES

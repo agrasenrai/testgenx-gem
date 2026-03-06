@@ -2,7 +2,7 @@
 import os
 
 # -- Gemini API (replacing all local ML models) --------------------------------
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyBdlymiZXP-KtW9yhwfG_Y3LL6MZASvISY")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyD1b2IQtaHd2da3R2nZx_R56lkvz-aDl54")
 GEMINI_MODEL   = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
 # ── Paths ─────────────────────────────────────────────────────────────────────

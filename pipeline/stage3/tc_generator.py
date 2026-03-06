@@ -38,7 +38,9 @@ class ISO29119TestCase:
 # ── Step Inference ───────────────────────────────────────────────────────────
 
 def _infer_steps(action: str, scenario: Scenario, rule: FormalRule) -> list:
-    role = scenario.inputs.get("user_role", rule.user_role or "clinician")
+    # Use SRS-extracted role. Fall back to "an authorized user" only as a last
+    # resort so steps remain readable without any hardcoded domain role names.
+    role = scenario.inputs.get("user_role") or rule.user_role or "an authorized user"
     param = next(iter([k for k in scenario.inputs if k not in ("user_role", "workflow",
                                                                  "from_state", "to_state")]), None)
     value = scenario.inputs.get(param, "threshold value") if param else "threshold value"

@@ -76,61 +76,50 @@ def _next_rule_id() -> str:
     _rule_counter += 1
     return f"RULE-{_rule_counter:03d}"
 
+_STRATEGY_NAME_MAP: dict[str, TestStrategy] = {
+    s.value.upper(): s for s in TestStrategy
+}
 
-def _detect_strategies(sentence: str, conditions: list,
-                        user_role: str | None, condition_keywords: list,
-                        skb: SessionKB,
-                        time_constraint=None) -> list[TestStrategy]:
-    strategies = []
-    sent_lower = sentence.lower()
 
-    # BVA: has at least one numeric resolvable condition
+def _resolve_strategies(gemini_strats: list[str], conditions: list,
+                        time_constraint, skb: SessionKB) -> list[TestStrategy]:
+    """
+    Convert Gemini's string strategy names to TestStrategy enums.
+
+    Gemini is the authoritative source.  We only add a Safety net:
+    if Gemini returned nothing at all (old cached response / empty list),
+    derive a minimal fallback from the rule data — but never over-generate.
+    """
+    # Primary path: use Gemini's choices directly
+    if gemini_strats:
+        resolved = []
+        for name in gemini_strats:
+            ts = _STRATEGY_NAME_MAP.get(name.upper().strip())
+            if ts:
+                resolved.append(ts)
+        if resolved:
+            return resolved
+
+    # Fallback (only when Gemini returned nothing at all — e.g. old API response):
+    # derive the single most-appropriate strategy from the rule data.
     numeric = [
         c for c in conditions
         if not c.get("abstract") and c.get("value") is not None
         and re.match(r'^\d+\.?\d*$', str(c["value"]))
     ]
+    has_workflow = bool(skb.get_all_workflow_names())
+
+    fallback = []
     if numeric:
-        strategies.append(TestStrategy.BVA)
+        fallback.append(TestStrategy.BVA)
+    elif time_constraint:
+        fallback.append(TestStrategy.TEMPORAL)
+    elif has_workflow:
+        fallback.append(TestStrategy.STATE_TRANSITION)
+    else:
+        fallback.append(TestStrategy.EP)  # role-or-event-based rule
+    return fallback
 
-    # EP: role context
-    role_aliases = skb.get_all_role_aliases_flat()
-    has_role_context = (
-        user_role is not None
-        or any(alias in sent_lower for alias in role_aliases)
-        or "access" in sent_lower
-        or "permission" in sent_lower
-        or "unauthorized" in sent_lower
-        or "authorized" in sent_lower
-    )
-    if has_role_context:
-        strategies.append(TestStrategy.EP)
-
-    # STATE_TRANSITION: state-change indicator words from SessionKB
-    if any(w in sent_lower for w in skb.state_transition_indicator_words):
-        strategies.append(TestStrategy.STATE_TRANSITION)
-
-    # DECISION_TABLE: multiple conditions or multiple condition keywords
-    if len(conditions) > 1 or len(condition_keywords) > 1:
-        strategies.append(TestStrategy.DECISION_TABLE)
-
-    # TEMPORAL: sentence has an explicit time deadline (within N / after N)
-    if time_constraint:
-        strategies.append(TestStrategy.TEMPORAL)
-
-    # CLINICAL_VALIDATION: has at least one SRS-sourced numeric condition
-    # — generates null/type/range/boundary invalid-input TCs
-    srs_numeric = [
-        c for c in numeric
-        if c.get("source") in ("srs_extracted", "event_based", None)
-    ]
-    if srs_numeric:
-        strategies.append(TestStrategy.CLINICAL_VALIDATION)
-
-    if not strategies:
-        strategies.append(TestStrategy.EP)
-
-    return strategies
 
 
 def assemble_rules(ner_results: list, skb: SessionKB) -> list:
@@ -263,10 +252,13 @@ def assemble_rules(ner_results: list, skb: SessionKB) -> list:
             else _infer_result(primary_action)
         )
 
-        # ── Strategies ───────────────────────────────────────────────────────
-        condition_keywords = entities.get("CONDITION", [])
-        strategies = _detect_strategies(sentence, conditions, user_role, condition_keywords, skb,
-                                        time_constraint=time_constraint)
+        # ── Strategies: Gemini is the authoritative source ────────────────────
+        strategies = _resolve_strategies(
+            getattr(ner, "test_strategies", []),
+            conditions,
+            time_constraint,
+            skb,
+        )
 
         rules.append(FormalRule(
             rule_id=_next_rule_id(),

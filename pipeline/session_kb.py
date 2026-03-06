@@ -326,7 +326,18 @@ class SessionKB:
 
     @property
     def state_transition_indicator_words(self) -> list[str]:
-        return self._state_transition_words
+        """
+        Derived at runtime from registered workflow state names and
+        trigger_keywords — no hardcoded English word list.
+        Falls back to linguistic_registry list only before Stage 0 populates workflows.
+        """
+        if self._workflows:
+            words: set[str] = set()
+            for wf in self._workflows.values():
+                words.update(s.lower() for s in wf.states)
+                words.update(kw.lower() for kw in wf.trigger_keywords)
+            return list(words)
+        return self._state_transition_words   # pre-bootstrap fallback only
 
     @property
     def spacy_dep_action_roles(self) -> list[str]:

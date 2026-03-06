@@ -73,16 +73,18 @@ def _apply_bva(rule: FormalRule, kb: KnowledgeBase) -> list:
             )
 
         # For operator "<" (trigger when value < threshold)
+        # boundary_exact: value == threshold → condition is FALSE → no trigger
         if op == "<":
             scenarios.append(make_sc("boundary_below", threshold - 1, rule.result, "HIGH"))
-            scenarios.append(make_sc("boundary_exact", threshold, f"boundary_exact:{rule.result}", "HIGH"))
+            scenarios.append(make_sc("boundary_exact", threshold, f"no_{rule.result}", "HIGH"))
             scenarios.append(make_sc("boundary_above", threshold + 1, f"no_{rule.result}", "MEDIUM"))
             scenarios.append(make_sc("well_inside_valid", max(0, threshold - BVA_WELL_INSIDE_OFFSET), rule.result, "MEDIUM"))
             scenarios.append(make_sc("well_inside_invalid", threshold + BVA_WELL_INSIDE_OFFSET, f"no_{rule.result}", "LOW"))
         # For operator ">" (trigger when value > threshold)
+        # boundary_exact: value == threshold → condition is FALSE → no trigger
         elif op == ">":
             scenarios.append(make_sc("boundary_above", threshold + 1, rule.result, "HIGH"))
-            scenarios.append(make_sc("boundary_exact", threshold, f"boundary_exact:{rule.result}", "HIGH"))
+            scenarios.append(make_sc("boundary_exact", threshold, f"no_{rule.result}", "HIGH"))
             scenarios.append(make_sc("boundary_below", threshold - 1, f"no_{rule.result}", "MEDIUM"))
             scenarios.append(make_sc("well_inside_valid", threshold + BVA_WELL_INSIDE_OFFSET, rule.result, "MEDIUM"))
             scenarios.append(make_sc("well_inside_invalid", max(0, threshold - BVA_WELL_INSIDE_OFFSET), f"no_{rule.result}", "LOW"))
@@ -100,15 +102,20 @@ def _apply_bva(rule: FormalRule, kb: KnowledgeBase) -> list:
 def _apply_ep(rule: FormalRule, kb: KnowledgeBase) -> list:
     scenarios = []
 
-    authorized_roles = kb.get_authorized_roles()
+    authorized_roles   = kb.get_authorized_roles()
     unauthorized_roles = kb.get_unauthorized_roles()
-    boundary_roles = ["ward_manager"]  # edge-case role at boundary of access
 
-    # Valid class: pick a representative authorized role
-    valid_role = rule.user_role if rule.user_role and rule.user_role in authorized_roles else (
-        authorized_roles[0] if authorized_roles else "physician"
+    # Valid class: always use the role the SRS explicitly names for this rule.
+    # If no role on the rule, take the first authorized role from the KB.
+    # Only skip if KB is truly empty (no roles extracted from this SRS at all).
+    valid_role = rule.user_role if rule.user_role else (
+        authorized_roles[0] if authorized_roles else None
     )
-    invalid_role = unauthorized_roles[0] if unauthorized_roles else "patient"
+    # Invalid class: first explicitly unauthorized role from KB.
+    invalid_role = unauthorized_roles[0] if unauthorized_roles else None
+
+    if not valid_role and not invalid_role:
+        return scenarios   # no role data in KB — cannot generate meaningful EP TCs
 
     base_inputs = {}
     # Include any BVA-like numeric values from conditions for context
@@ -129,49 +136,52 @@ def _apply_ep(rule: FormalRule, kb: KnowledgeBase) -> list:
             priority=priority,
         )
 
-    scenarios.append(make_ep("valid_class", valid_role, rule.result, "MEDIUM"))
-    scenarios.append(make_ep("invalid_class", invalid_role, "access_denied", "HIGH"))
-    for br in boundary_roles:
-        if br != valid_role and br != invalid_role:
-            scenarios.append(make_ep("boundary_class", br, "access_controlled", "MEDIUM"))
+    if valid_role:
+        scenarios.append(make_ep("valid_class",   valid_role,   rule.result,    "MEDIUM"))
+    if invalid_role:
+        scenarios.append(make_ep("invalid_class", invalid_role, "access_denied", "HIGH"))
+
+    # Boundary class: KB roles with intermediate access ("limited" or "read-only"),
+    # excluding the roles already used above.
+    used = {valid_role, invalid_role}
+    all_kb_roles = kb.get_all_roles() if hasattr(kb, "get_all_roles") else []
+    for r in all_kb_roles:
+        if r not in used and r not in (valid_role, invalid_role):
+            # Use it as a boundary class test if KB has it.
+            scenarios.append(make_ep("boundary_class", r, "access_controlled", "MEDIUM"))
+            break  # one boundary case is sufficient
 
     return scenarios
 
 
 # ── State Transition ─────────────────────────────────────────────────────────
 
-_WORKFLOW_KEYWORDS = {
-    "medication_order": ["medication", "order", "draft", "submitted", "approved",
-                         "dispensed", "administered", "cancelled", "complete"],
-    "alert_lifecycle":  ["alert", "acknowledge", "notify", "escalate", "trigger", "resolve"],
-    "prescription":     ["prescription", "e-prescription", "prescri", "verified", "dispens"],
-}
-
-
-def _detect_workflow(sentence: str) -> str | None:
-    sl = sentence.lower()
-    for wf_name, keywords in _WORKFLOW_KEYWORDS.items():
-        if any(kw in sl for kw in keywords):
-            return wf_name
-    return None
-
 
 def _apply_state_transition(rule: FormalRule, kb: KnowledgeBase) -> list:
     scenarios = []
 
-    workflow_name = _detect_workflow(rule.source_sentence)
-    if not workflow_name:
-        # Try each workflow in KB
-        for wf_name in kb.get_all_workflow_names():
-            wf_data = kb.get_workflow(wf_name)
-            if wf_data:
-                workflow_name = wf_name
+    # Use SessionKB's own KB-driven workflow detector (scores by trigger_keywords
+    # and state names already registered from the SRS — no hardcoded word lists).
+    wf = None
+    workflow_name = None
+
+    detected_name = (
+        kb.detect_workflow_from_text(rule.source_sentence)
+        if hasattr(kb, "detect_workflow_from_text")
+        else None
+    )
+    if detected_name:
+        wf = kb.get_workflow(detected_name)
+        workflow_name = detected_name
+
+    # Fallback: first available workflow in KB
+    if not wf:
+        for kn in kb.get_all_workflow_names():
+            wf = kb.get_workflow(kn)
+            if wf:
+                workflow_name = kn
                 break
 
-    if not workflow_name:
-        return scenarios
-
-    wf = kb.get_workflow(workflow_name)
     if not wf:
         return scenarios
 
@@ -193,7 +203,7 @@ def _apply_state_transition(rule: FormalRule, kb: KnowledgeBase) -> list:
             strategy=TestStrategy.STATE_TRANSITION,
             scenario_type="valid_transition",
             inputs={"workflow": workflow_name, "from_state": from_state, "to_state": to_state,
-                    "user_role": rule.user_role or "physician"},
+                    "user_role": rule.user_role},
             expected_result="transition_success",
             priority="MEDIUM",
         )
@@ -213,7 +223,7 @@ def _apply_state_transition(rule: FormalRule, kb: KnowledgeBase) -> list:
                 strategy=TestStrategy.STATE_TRANSITION,
                 scenario_type="invalid_transition_skip",
                 inputs={"workflow": workflow_name, "from_state": from_state, "to_state": to_state,
-                        "user_role": rule.user_role or "physician"},
+                        "user_role": rule.user_role},
                 expected_result="transition_rejected",
                 priority="HIGH",
             )
@@ -229,7 +239,7 @@ def _apply_state_transition(rule: FormalRule, kb: KnowledgeBase) -> list:
             strategy=TestStrategy.STATE_TRANSITION,
             scenario_type="invalid_transition_from_terminal",
             inputs={"workflow": workflow_name, "from_state": term_state, "to_state": target,
-                    "user_role": rule.user_role or "physician"},
+                    "user_role": rule.user_role},
             expected_result="transition_rejected",
             priority="HIGH",
         )
@@ -254,13 +264,16 @@ def _apply_decision_table(rule: FormalRule, kb: KnowledgeBase) -> list:
             })
 
     if rule.user_role:
-        authorized = kb.get_authorized_roles()
+        authorized   = kb.get_authorized_roles()
         unauthorized = kb.get_unauthorized_roles()
-        binary_conditions.append({
-            "name": "user_role",
-            "true_value": rule.user_role if rule.user_role in authorized else (authorized[0] if authorized else "physician"),
-            "false_value": unauthorized[0] if unauthorized else "patient",
-        })
+        # Use rule.user_role as the "true" value; use first unauthorized as "false".
+        # Only add role condition if unauthorized roles exist in KB.
+        if unauthorized:
+            binary_conditions.append({
+                "name":        "user_role",
+                "true_value":  rule.user_role,
+                "false_value": unauthorized[0],
+            })
 
     if not binary_conditions:
         return scenarios
@@ -446,19 +459,21 @@ def generate_scenarios(rules: list, kb) -> list:
             except Exception as e:
                 print(f"  [WARN] Strategy {strategy} failed for {rule.rule_id}: {e}")
 
-        # Guarantee at least one scenario per rule
+        # Guarantee at least one scenario per rule.
+        # Only produce a fallback EP scenario if we have a role from KB or the rule.
         if not rule_scenarios:
-            authorized = kb.get_authorized_roles()
-            fallback_role = rule.user_role or (authorized[0] if authorized else "physician")
-            rule_scenarios.append(Scenario(
-                scenario_id=_next_scenario_id(rule.rule_id, "EP-default"),
-                rule_id=rule.rule_id,
-                strategy=TestStrategy.EP,
-                scenario_type="default",
-                inputs={"user_role": fallback_role},
-                expected_result=rule.result,
-                priority="MEDIUM",
-            ))
+            authorized    = kb.get_authorized_roles()
+            fallback_role = rule.user_role or (authorized[0] if authorized else None)
+            if fallback_role:
+                rule_scenarios.append(Scenario(
+                    scenario_id=_next_scenario_id(rule.rule_id, "EP-default"),
+                    rule_id=rule.rule_id,
+                    strategy=TestStrategy.EP,
+                    scenario_type="default",
+                    inputs={"user_role": fallback_role},
+                    expected_result=rule.result,
+                    priority="MEDIUM",
+                ))
 
         all_scenarios.extend(rule_scenarios)
 

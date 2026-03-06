@@ -25,6 +25,7 @@ class NERResult:
     # {"ACTION": [...], "USER_ROLE": [...], "CLINICAL_PARAM": [...],
     #  "OPERATOR": [...], "CLINICAL_VALUE": [...],
     #  "TIME_CONSTRAINT": [...], "CONDITION": [...]}
+    test_strategies: list = field(default_factory=list)  # Gemini-recommended strategies
     expected_result: str = ""   # Gemini-generated verifiable outcome description
 
 
@@ -68,10 +69,16 @@ def extract_entities(
             val = raw_ents.get(key, [])
             entities[key] = val if isinstance(val, list) else [val]
 
+        # test_strategies: Gemini's recommendation for which test types apply
+        raw_strats = data.get("test_strategies", [])
+        if not isinstance(raw_strats, list):
+            raw_strats = []
+
         expected_result = data.get("expected_result", "") or ""
         ner_results.append(NERResult(
             sentence=sentence,
             entities=entities,
+            test_strategies=[s.strip().upper() for s in raw_strats if isinstance(s, str)],
             expected_result=expected_result.strip(),
         ))
 

@@ -29,12 +29,7 @@
     "once", "whenever", "provided", "upon", "following"
   ],
 
-  "state_transition_indicator_words": [
-    "transition", "transitions", "cancel", "cancelled", "approve", "approved",
-    "submit", "submitted", "dispense", "dispensed", "administer", "administered",
-    "complete", "completed", "draft", "verified", "created", "re-approve",
-    "workflow", "state change", "order status", "status"
-  ],
+  "_comment_state_transition": "No hardcoded state/workflow words here. state_transition_indicator_words are derived at runtime from the workflow states and trigger_keywords registered in SessionKB after Stage 0. See session_kb.py: state_transition_indicator_words property.",
 
   "role_deny_patterns": [
     "shall not have access",
